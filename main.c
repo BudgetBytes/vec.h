@@ -52,6 +52,12 @@ void vec_push(Vec *vec, void *data)
 
 }
 
+void vec_destory(Vec *vec) {
+    for (size_t i = 0; i < vec->count; ++i) free(vec->data[i]);
+    free(vec->data);
+    free(vec);
+}
+
 Vec* vec_init(size_t capacity) 
 {
     Vec *vec = malloc(sizeof(Vec));
@@ -94,9 +100,7 @@ int main(void)
         printf("Name: %s, Surname: %s, Age: %d\n", p->name, p->surname, p->age);
     }
 
-    free(vec->data);
-    free(vec);
-
+    vec_destory(vec);
     return 0;
 }
 
