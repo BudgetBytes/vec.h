@@ -13,6 +13,20 @@ typedef struct Person {
     int age;
 } Person;
 
+// Remove index element 
+void vec_remove(Vec *vec, size_t index) {
+    if (vec->count <= 0 || vec->count < index) return;
+
+    free(vec->data[index]);
+    for (size_t i = index; i < vec->count - 1; ++i) {
+        vec->data[i] = vec->data[i + 1];
+    }
+
+    vec->count--;
+    vec->capacity--;
+}
+
+// Remove last element 
 void vec_pop(Vec *vec)
 {
    if (vec->count <= 0) return;
@@ -22,6 +36,7 @@ void vec_pop(Vec *vec)
    vec->capacity--;
 }
 
+// Remove first element 
 void vec_shift(Vec *vec)
 {
    if (vec->count <= 0) return;
@@ -36,6 +51,7 @@ void vec_shift(Vec *vec)
    vec->capacity--;
 }
 
+// Append element 
 void vec_push(Vec *vec, void *data) 
 {
     if (vec->count == vec->capacity) {
@@ -52,12 +68,14 @@ void vec_push(Vec *vec, void *data)
 
 }
 
+// Destroy vector and free memory
 void vec_destory(Vec *vec) {
     for (size_t i = 0; i < vec->count; ++i) free(vec->data[i]);
     free(vec->data);
     free(vec);
 }
 
+// Initialize vector
 Vec* vec_init(size_t capacity) 
 {
     Vec *vec = malloc(sizeof(Vec));
@@ -95,6 +113,7 @@ int main(void)
     vec_shift(vec);
     vec_shift(vec);
     vec_pop(vec);
+    vec_remove(vec, 2);
     for (size_t i = 0; i < vec->count; i++) {
         Person *p = (Person *)vec->data[i];
         printf("Name: %s, Surname: %s, Age: %d\n", p->name, p->surname, p->age);
