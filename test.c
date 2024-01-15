@@ -53,18 +53,20 @@ Vec* vec_init(size_t capacity)
 int main(void) 
 {
     Vec *vec = vec_init(20);
+ 
     for (size_t i = 0; i < 100; ++i) {
-        Person person1 = {
-           .name = "John",
-           .surname = "Doe",
-        };
-        vec_append(vec, &person1);
+        Person *person = malloc(sizeof(Person));
+        person->name = "John";
+        person->surname = "Doe";
+        person->age = i;
+        vec_append(vec, person);
     }
+
      
 
     for (size_t i = 0; i < vec->count; i++) {
-       Person *p = (Person *)vec->data[i];
-       printf("Name: %s, Surname: %s\n", p->name, p->surname);
+        Person *p = (Person *)vec->data[i];
+        printf("Name: %s, Surname: %s, Age: %d\n", p->name, p->surname, p->age);
     }
 
     free(vec->data);
