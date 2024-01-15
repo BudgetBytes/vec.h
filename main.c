@@ -13,7 +13,30 @@ typedef struct Person {
     int age;
 } Person;
 
-void vec_append(Vec *vec, void *data) 
+void vec_pop(Vec *vec)
+{
+   if (vec->count <= 0) return;
+
+   free(vec->data[vec->count - 1]);
+   vec->count--;
+   vec->capacity--;
+}
+
+void vec_shift(Vec *vec)
+{
+   if (vec->count <= 0) return;
+
+   free(vec->data[0]);
+
+   for (size_t i = 0; i < vec->count - 1; ++i) {
+       vec->data[i] = vec->data[i + 1];
+   }
+
+   vec->count--;
+   vec->capacity--;
+}
+
+void vec_push(Vec *vec, void *data) 
 {
     if (vec->count == vec->capacity) {
         vec->capacity *= 2;
@@ -27,7 +50,7 @@ void vec_append(Vec *vec, void *data)
     vec->data[vec->count] = data;
     vec->count++;
 
-    }
+}
 
 Vec* vec_init(size_t capacity) 
 {
@@ -59,11 +82,13 @@ int main(void)
         person->name = "John";
         person->surname = "Doe";
         person->age = i;
-        vec_append(vec, person);
+        vec_push(vec, person);
     }
 
-     
-
+    vec_pop(vec);
+    vec_shift(vec);
+    vec_shift(vec);
+    vec_pop(vec);
     for (size_t i = 0; i < vec->count; i++) {
         Person *p = (Person *)vec->data[i];
         printf("Name: %s, Surname: %s, Age: %d\n", p->name, p->surname, p->age);
