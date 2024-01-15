@@ -15,7 +15,10 @@ typedef struct Person {
 
 // Remove index element 
 void vec_remove(Vec *vec, size_t index) {
-    if (vec->count <= 0 || vec->count < index) return;
+    if (vec->count <= 0 || vec->count < index) {
+        printf("ERROR: Cannot remove index %zu. Count->%zu.\n", index, vec->count);
+        return;
+    };
 
     free(vec->data[index]);
     for (size_t i = index; i < vec->count - 1; ++i) {
@@ -29,23 +32,29 @@ void vec_remove(Vec *vec, size_t index) {
 // Remove last element 
 void vec_pop(Vec *vec)
 {
-   if (vec->count <= 0) return;
+    if (vec->count <= 0) {
+        printf("ERROR: Count->%zu.\n", vec->count);
+        return;
+    };
 
-   free(vec->data[vec->count - 1]);
-   vec->count--;
-   vec->capacity--;
+    free(vec->data[vec->count - 1]);
+    vec->count--;
+    vec->capacity--;
 }
 
 // Remove first element 
 void vec_shift(Vec *vec)
 {
-   if (vec->count <= 0) return;
+    if (vec->count <= 0) {
+        printf("ERROR: Count->%zu.\n", vec->count);
+        return;
+    }
 
-   free(vec->data[0]);
+    free(vec->data[0]);
 
-   for (size_t i = 0; i < vec->count - 1; ++i) {
+    for (size_t i = 0; i < vec->count - 1; ++i) {
        vec->data[i] = vec->data[i + 1];
-   }
+    }
 
    vec->count--;
    vec->capacity--;
@@ -80,15 +89,15 @@ Vec* vec_init(size_t capacity)
 {
     Vec *vec = malloc(sizeof(Vec));
     if (!vec) {
-       fprintf(stderr, "ERROR: Failed to allocate memory for vector.\n");
-       exit(EXIT_FAILURE);
+        fprintf(stderr, "ERROR: Failed to allocate memory for vector.\n");
+        exit(EXIT_FAILURE);
     }
 
     vec->data = malloc(capacity * sizeof(void *));
     if (!vec->data) {
-       fprintf(stderr, "ERROR: Failed to allocate memory for vector data.\n");
-       free(vec);
-       exit(EXIT_FAILURE);
+        fprintf(stderr, "ERROR: Failed to allocate memory for vector data.\n");
+        free(vec);
+        exit(EXIT_FAILURE);
     }
 
     vec->count = 0;
@@ -101,7 +110,7 @@ int main(void)
 {
     Vec *vec = vec_init(20);
  
-    for (size_t i = 0; i < 100; ++i) {
+    for (size_t i = 0; i < 30; ++i) {
         Person *person = malloc(sizeof(Person));
         person->name = "John";
         person->surname = "Doe";
@@ -113,7 +122,7 @@ int main(void)
     vec_shift(vec);
     vec_shift(vec);
     vec_pop(vec);
-    vec_remove(vec, 2);
+    vec_remove(vec, 200);
     for (size_t i = 0; i < vec->count; i++) {
         Person *p = (Person *)vec->data[i];
         printf("Name: %s, Surname: %s, Age: %d\n", p->name, p->surname, p->age);
