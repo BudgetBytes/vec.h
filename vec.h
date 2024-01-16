@@ -10,8 +10,6 @@ typedef struct Vec {
     size_t capacity;
 } Vec;
 
-
-
 // Remove index element 
 void vec_remove(Vec *vec, size_t index) {
     if (vec->count <= 0 || vec->count < index) {
